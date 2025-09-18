@@ -110,7 +110,6 @@ class RidePricingOptimizer:
         State: (period, spillover_level)
         Decision: price at each period
         
-        Uses backward induction to find optimal pricing strategy
         Discretizes spillover into buckets for computational tractability
         """
         n_periods = len(base_demands)
@@ -135,9 +134,7 @@ class RidePricingOptimizer:
                 # Total demand for this period
                 total_demand = base_demands[period] + spillover
                 
-                # Try all possible prices
                 for price in self.price_options:
-                    # Calculate immediate profit
                     actual_customers, next_spillover = self._calculate_demand_and_spillover(
                         total_demand, price
                     )
@@ -148,7 +145,6 @@ class RidePricingOptimizer:
                         total_profit = immediate_profit
                     else:
                         # Add future profit from next period
-                        # Find closest spillover bucket for next period
                         next_spill_idx = min(
                             range(len(spillover_states)),
                             key=lambda i: abs(spillover_states[i] - next_spillover)
@@ -171,7 +167,6 @@ class RidePricingOptimizer:
         current_spillover = 0.0
         
         for period in range(n_periods):
-            # Find closest spillover bucket
             spill_idx = min(
                 range(len(spillover_states)),
                 key=lambda i: abs(spillover_states[i] - current_spillover)
@@ -242,7 +237,7 @@ class RidePricingOptimizer:
 
         elif price < 20:
             raw_deferred = total_demand * 0.10
-            lost = raw_deferred * 0.50   # half of deferred switch services
+            lost = raw_deferred * 0.50   # half of deferred switch services (simulated loss)
             deferred = raw_deferred - lost
             current = total_demand - raw_deferred
             return current, deferred
