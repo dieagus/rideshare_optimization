@@ -136,6 +136,6 @@ curl -X POST http://127.0.0.1:5000/api/optimize \
     "demands": [20, 45, 85, 90, 70, 35, 25],
     "algorithm": "forward_greedy",
     "cost_per_ride": 3
-  }
+  }'
 
 '''
